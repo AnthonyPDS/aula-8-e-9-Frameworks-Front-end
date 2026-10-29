@@ -4,6 +4,7 @@ import { Header } from "./components/Header";
 import { Navbar } from "./components/Navbar";
 import { Filtro } from "./components/Filtro";
 import { ListaAlgoritmos } from "./components/ListaAlgoritmos";
+import { ModalDetalhes } from "./components/ModalDetalhes";
 import { GuiaNotacoes } from "./components/GuiaNotacoes";
 import { Footer } from "./components/Footer";
 import "./App.css";
@@ -17,6 +18,10 @@ function App() {
   const [subcategoria, setSubcategoria] = useState("Todas");
   const [apenas2Look, setApenas2Look] = useState(false);
   const [dificuldade, setDificuldade] = useState("Todas");
+  const [filtroStatus, setFiltroStatus] = useState("Todos");
+
+  // Estado para Modal de Detalhes (caso selecionado ou null)
+  const [casoSelecionado, setCasoSelecionado] = useState(null);
 
   // Estado dos algoritmos aprendidos (com persistência no localStorage)
   const [aprendidos, setAprendidos] = useState(() => {
@@ -49,6 +54,7 @@ function App() {
     setSubcategoria("Todas");
     setApenas2Look(false);
     setDificuldade("Todas");
+    setFiltroStatus("Todos");
   };
 
   // Troca de aba e reinicia subcategoria
@@ -56,6 +62,7 @@ function App() {
     setActiveTab(novaAba);
     setSubcategoria("Todas");
     setBusca("");
+    setFiltroStatus("Todos");
   };
 
   // Base de dados ativa para a aba atual
@@ -100,9 +107,18 @@ function App() {
         return false;
       }
 
+      // 5. Filtro condicional por status de aprendizado
+      const memorizado = aprendidos.includes(item.id);
+      if (filtroStatus === "Memorizados" && !memorizado) {
+        return false;
+      }
+      if (filtroStatus === "Pendentes" && memorizado) {
+        return false;
+      }
+
       return true;
     });
-  }, [listaBase, busca, subcategoria, apenas2Look, dificuldade]);
+  }, [listaBase, busca, subcategoria, apenas2Look, dificuldade, filtroStatus, aprendidos]);
 
   // Quantidade de aprendidos na aba ativa
   const aprendidosAba = useMemo(() => {
@@ -143,6 +159,8 @@ function App() {
               onToggle2Look={() => setApenas2Look((prev) => !prev)}
               filtroDificuldade={dificuldade}
               onSelectDificuldade={setDificuldade}
+              filtroStatus={filtroStatus}
+              onSelectStatus={setFiltroStatus}
               totalFiltrados={algoritmosFiltrados.length}
               totalGeral={listaBase.length}
               onLimparFiltros={handleLimparFiltros}
@@ -154,10 +172,21 @@ function App() {
               aprendidos={aprendidos}
               onToggleAprendido={handleToggleAprendido}
               onLimparFiltros={handleLimparFiltros}
+              onSelectCaso={(caso) => setCasoSelecionado(caso)}
             />
           </>
         )}
       </main>
+
+      {/* Renderização Condicional do Modal de Detalhes (curto-circuito) */}
+      {casoSelecionado && (
+        <ModalDetalhes
+          caso={casoSelecionado}
+          isAprendido={aprendidos.includes(casoSelecionado.id)}
+          onToggleAprendido={handleToggleAprendido}
+          onClose={() => setCasoSelecionado(null)}
+        />
+      )}
 
       {/* 5. Componente Footer com Props */}
       <Footer

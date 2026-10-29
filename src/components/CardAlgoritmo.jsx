@@ -33,7 +33,8 @@ export function CardAlgoritmo({
   modo2Look,
   stickers,
   isAprendido = false,
-  onToggleAprendido
+  onToggleAprendido,
+  onSelect
 }) {
   const [copiado, setCopiado] = useState(false);
 
@@ -76,7 +77,13 @@ export function CardAlgoritmo({
         </div>
 
         <div className="card-info-wrapper">
-          <h2 className="card-title">{nome}</h2>
+          <h2
+            className="card-title clickable-title"
+            onClick={onSelect}
+            title="Clique para abrir detalhes ampliados"
+          >
+            {nome} ↗
+          </h2>
           <span className="card-subcategoria">{subcategoria}</span>
           <p className="card-descricao">{descricaoVisual}</p>
         </div>

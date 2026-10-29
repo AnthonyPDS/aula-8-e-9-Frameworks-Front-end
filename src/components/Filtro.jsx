@@ -24,6 +24,8 @@ export function Filtro({
   onToggle2Look,
   filtroDificuldade,
   onSelectDificuldade,
+  filtroStatus = "Todos",
+  onSelectStatus,
   totalFiltrados = 0,
   totalGeral = 0,
   onLimparFiltros
@@ -32,7 +34,8 @@ export function Filtro({
     busca.trim() !== "" ||
     subcategoriaSelecionada !== "Todas" ||
     apenas2Look ||
-    filtroDificuldade !== "Todas";
+    filtroDificuldade !== "Todas" ||
+    filtroStatus !== "Todos";
 
   return (
     <section className="filtro-container" aria-label="Filtros de busca e categorização">
@@ -106,6 +109,27 @@ export function Filtro({
             </button>
           ))}
         </div>
+
+        {/* Seletor de Status de Aprendizado */}
+        {onSelectStatus && (
+          <div className="status-group" role="group" aria-label="Filtrar por status">
+            <span className="pill-group-title">Status:</span>
+            {[
+              { id: "Todos", label: "Todos" },
+              { id: "Memorizados", label: "✓ Memorizados" },
+              { id: "Pendentes", label: "⏳ A Treinar" }
+            ].map((st) => (
+              <button
+                key={st.id}
+                type="button"
+                className={`pill-btn pill-status ${filtroStatus === st.id ? "ativo" : ""}`}
+                onClick={() => onSelectStatus(st.id)}
+              >
+                {st.label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Barra de Status e Feedback de Resultados */}

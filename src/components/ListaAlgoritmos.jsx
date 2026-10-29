@@ -16,7 +16,8 @@ export function ListaAlgoritmos({
   algoritmos = [],
   aprendidos = [],
   onToggleAprendido,
-  onLimparFiltros
+  onLimparFiltros,
+  onSelectCaso
 }) {
   // Renderização condicional para estado de lista vazia
   if (algoritmos.length === 0) {
@@ -61,6 +62,7 @@ export function ListaAlgoritmos({
             stickers={algo.stickers}
             isAprendido={aprendidos.includes(algo.id)}
             onToggleAprendido={onToggleAprendido}
+            onSelect={() => onSelectCaso && onSelectCaso(algo)}
           />
         ))}
       </div>
