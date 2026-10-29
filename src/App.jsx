@@ -3,7 +3,7 @@ import { ollAlgorithms, pllAlgorithms, getSubcategorias } from "./data";
 import { Header } from "./components/Header";
 import { Navbar } from "./components/Navbar";
 import { Filtro } from "./components/Filtro";
-import { CardAlgoritmo } from "./components/CardAlgoritmo";
+import { ListaAlgoritmos } from "./components/ListaAlgoritmos";
 import { GuiaNotacoes } from "./components/GuiaNotacoes";
 import { Footer } from "./components/Footer";
 import "./App.css";
@@ -148,48 +148,13 @@ function App() {
               onLimparFiltros={handleLimparFiltros}
             />
 
-            {/* Renderização da Lista de Cards */}
-            <section className="lista-section" aria-label="Catálogo de Algoritmos">
-              {algoritmosFiltrados.length === 0 ? (
-                <div className="empty-state-card">
-                  <div className="empty-state-icon">🧩</div>
-                  <h3>Nenhum algoritmo encontrado</h3>
-                  <p>
-                    Tente buscar por outro termo ou remova os filtros ativos para ver mais casos.
-                  </p>
-                  <button
-                    type="button"
-                    className="btn-limpar-filtros"
-                    onClick={handleLimparFiltros}
-                  >
-                    Redefinir Filtros
-                  </button>
-                </div>
-              ) : (
-                <div className="grid-algoritmos">
-                  {algoritmosFiltrados.map((algo) => (
-                    /* 4. Componente CardAlgoritmo reutilizado com Props e Key única */
-                    <CardAlgoritmo
-                      key={algo.id}
-                      id={algo.id}
-                      nome={algo.nome}
-                      codigoWCA={algo.codigoWCA}
-                      tipo={algo.tipo}
-                      subcategoria={algo.subcategoria}
-                      dificuldade={algo.dificuldade}
-                      formula={algo.formula}
-                      formulaAlternativa={algo.formulaAlternativa}
-                      descricaoVisual={algo.descricaoVisual}
-                      dica={algo.dica}
-                      modo2Look={algo.modo2Look}
-                      stickers={algo.stickers}
-                      isAprendido={aprendidos.includes(algo.id)}
-                      onToggleAprendido={handleToggleAprendido}
-                    />
-                  ))}
-                </div>
-              )}
-            </section>
+            {/* 4. Componente ListaAlgoritmos (Renderização de Coleções e Keys) */}
+            <ListaAlgoritmos
+              algoritmos={algoritmosFiltrados}
+              aprendidos={aprendidos}
+              onToggleAprendido={handleToggleAprendido}
+              onLimparFiltros={handleLimparFiltros}
+            />
           </>
         )}
       </main>
