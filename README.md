@@ -1,7 +1,8 @@
 # 🧩 SpeedCube OLL & PLL Guide — Planejamento e Documentação do Projeto
 
-> **Status do Projeto:** ✅ 100% Concluído e Validado no Navegador!
-> **Repositório Oficial:** [github.com/AnthonyPDS/aula-8-e-9-Frameworks-Front-end](https://github.com/AnthonyPDS/aula-8-e-9-Frameworks-Front-end)
+> **Status do Projeto:** ✅ 100% Concluído e no Ar!
+> 🌐 **Deploy na Vercel:** [https://aula-8-e-9.vercel.app](https://aula-8-e-9.vercel.app)
+> 📦 **Repositório Oficial:** [github.com/AnthonyPDS/aula-8-e-9-Frameworks-Front-end](https://github.com/AnthonyPDS/aula-8-e-9-Frameworks-Front-end)
 
 ---
 
