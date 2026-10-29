@@ -1,5 +1,10 @@
 # 🧩 SpeedCube OLL & PLL Guide — Planejamento e Documentação do Projeto
 
+> **Status do Projeto:** ✅ 100% Concluído e Validado no Navegador!
+> **Repositório Oficial:** [github.com/AnthonyPDS/aula-8-e-9-Frameworks-Front-end](https://github.com/AnthonyPDS/aula-8-e-9-Frameworks-Front-end)
+
+---
+
 Aplicação web interativa em **React** desenvolvida para apoiar speedcubers e entusiastas do Cubo Mágico 3x3 no aprendizado e consulta rápida dos algoritmos do método **CFOP (Fridrich)**, com foco nas etapas finais: **OLL** (*Orientation of the Last Layer*) e **PLL** (*Permutation of the Last Layer*).
 
 Este projeto atende integralmente à atividade prática da disciplina **Frameworks Front-end (SENAI)**, incorporando todos os conceitos fundamentais do ecossistema React.
@@ -210,3 +215,74 @@ npm run dev
 
 ---
 *Projeto desenvolvido para a disciplina de Frameworks Front-end — SENAI.*
+
+---
+
+## 📸 Demonstração Prática dos Conceitos no Código
+
+### 1. JSX (JavaScript XML)
+A interface é descrita de forma declarativa utilizando interpolação de expressões `{}`, fragments `<>`, e classes condicionais:
+```jsx
+<article className={`card-algoritmo ${isAprendido ? "card-aprendido" : ""}`}>
+  <span className="badge-wca">{codigoWCA}</span>
+  <h2 className="card-title clickable-title" onClick={onSelect}>{nome} ↗</h2>
+  <code>{formula}</code>
+</article>
+```
+
+### 2. Componentes Modulares
+A aplicação foi subdividida em componentes reutilizáveis e focados:
+- `Header`: Cabeçalho com estatísticas de progresso reativas.
+- `Navbar`: Navegação por abas (OLL, PLL, Guia de Notações).
+- `Filtro`: Barra de busca textual, filtros de nível, 2-Look e status.
+- `CardAlgoritmo`: Card individual reutilizável com interações de cópia e memorização.
+- `DiagramaCubo`: Visualizador vetorial interativo da face amarela e orientações.
+- `ListaAlgoritmos`: Container de renderização da coleção com estado vazio.
+- `ModalDetalhes`: Visualização ampliada e imersiva do caso ao clicar no card.
+- `GuiaNotacoes`: Dicionário prático com movimentos WCA para iniciantes.
+- `Footer`: Rodapé com informações de autoria e referências do curso.
+
+### 3. Props com Desestruturação
+Os componentes recebem propriedades de maneira explícita e limpa, facilitando manutenção e tipagem mental:
+```jsx
+export function CardAlgoritmo({
+  id,
+  nome,
+  codigoWCA,
+  tipo,
+  dificuldade,
+  formula,
+  isAprendido = false,
+  onToggleAprendido,
+  onSelect
+}) { ... }
+```
+
+### 4. Virtual DOM & Gestão de Estado
+O estado central no `App.jsx` gerencia:
+- Aba ativa (`activeTab`)
+- Termo de busca e seletores de filtro (`busca`, `subcategoria`, `dificuldade`, `filtroStatus`)
+- Casos aprendidos (`aprendidos`) com persistência instantânea no `localStorage`
+- Caso selecionado no modal (`casoSelecionado`)
+
+Quando um card é marcado como memorizado ou o usuário filtra os dados, o React calcula o novo **Virtual DOM**, realiza o algoritmo de reconciliação (*diffing*) e atualiza **apenas os nós alterados no DOM real**, sem nenhum recarregamento de página.
+
+### 5. Listas e Keys
+A coleção é mapeada dinamicamente com chave única e estável (`key={algo.id}`):
+```jsx
+{algoritmos.map((algo) => (
+  <CardAlgoritmo
+    key={algo.id}
+    {...algo}
+    isAprendido={aprendidos.includes(algo.id)}
+    onToggleAprendido={onToggleAprendido}
+    onSelect={() => onSelectCaso(algo)}
+  />
+))}
+```
+
+### 6. Renderização Condicional
+Aplicada extensivamente na aplicação:
+- **Curto-circuito (`&&`):** Abertura do modal (`casoSelecionado && <ModalDetalhes />`) e exibição de badges (`caso.modo2Look && <span className="badge-2look">2-Look</span>`).
+- **Operador Ternário (`? :`):** Alternador de botão (`isAprendido ? "✓ Memorizado" : "+ Memorizar"`) e classes dinâmicas.
+- **Retorno Antecipado (`if / return null` ou empty state):** Exibição do card amigável "Nenhum algoritmo encontrado" com botão de redefinir filtros caso a lista filtrada esteja vazia.
